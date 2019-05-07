@@ -1,0 +1,506 @@
+{
+    "type": "object",
+    "properties": {
+        "key": {
+            "required": true,
+            "type": "string"
+        },
+        "requestBody": {
+            "properties": {
+                "algorithm": {
+                    "properties": {
+                        "objective": {
+                            "enum": [
+                                "transport_time",
+                                "completion_time"
+                            ],
+                            "type": "string"
+                        },
+                        "problem_type": {
+                            "enum": [
+                                "min",
+                                "min-max"
+                            ],
+                            "type": "string"
+                        }
+                    },
+                    "type": "object"
+                },
+                "cost_matrices": {
+                    "description": "An array of cost matrices",
+                    "items": {
+                        "properties": {
+                            "profile": {
+                                "description": "vehicle profile or empty if catch all fallback",
+                                "type": "string"
+                            },
+                            "type": {
+                                "description": "type of cost matrix, currently default or google are supported",
+                                "enum": [
+                                    "default",
+                                    "google"
+                                ],
+                                "type": "string"
+                            },
+                            "url": {
+                                "description": "URL of matrix service",
+                                "type": "string"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "type": "array"
+                },
+                "objectives": {
+                    "description": "An array of objectives",
+                    "items": {
+                        "properties": {
+                            "type": {
+                                "description": "type of objective function, i.e. min or min-max ",
+                                "enum": [
+                                    "min",
+                                    "min-max"
+                                ],
+                                "type": "string"
+                            },
+                            "value": {
+                                "description": "objective function value",
+                                "enum": [
+                                    "completion_time",
+                                    "transport_time",
+                                    "vehicles"
+                                ],
+                                "type": "string"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "type": "array"
+                },
+                "relations": {
+                    "description": "An array of relations",
+                    "items": {
+                        "properties": {
+                            "ids": {
+                                "description": "An array of ids that should be related",
+                                "items": {
+                                    "description": "id of services or special ids of shipments",
+                                    "type": "string"
+                                },
+                                "type": "array"
+                            },
+                            "type": {
+                                "description": "identifier of relation",
+                                "type": "string"
+                            },
+                            "vehicle_id": {
+                                "description": "vehicle id",
+                                "type": "string"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "type": "array"
+                },
+                "services": {
+                    "description": "An array of services",
+                    "items": {
+                        "properties": {
+                            "address": {
+                                "properties": {
+                                    "lat": {
+                                        "description": "latitude",
+                                        "format": "double",
+                                        "type": "number"
+                                    },
+                                    "location_id": {
+                                        "description": "Unique identifier of location",
+                                        "type": "string"
+                                    },
+                                    "lon": {
+                                        "description": "longitude",
+                                        "format": "double",
+                                        "type": "number"
+                                    }
+                                },
+                                "type": "object"
+                            },
+                            "allowed_vehicles": {
+                                "description": "array of allowed vehicle ids",
+                                "items": {
+                                    "type": "string"
+                                },
+                                "type": "array"
+                            },
+                            "duration": {
+                                "description": "duration of service, i.e. time in ms the corresponding activity takes",
+                                "format": "int64",
+                                "type": "integer"
+                            },
+                            "id": {
+                                "description": "Unique identifier of service",
+                                "type": "string"
+                            },
+                            "name": {
+                                "description": "name of service",
+                                "type": "string"
+                            },
+                            "priority": {
+                                "description": "priority of service, i.e. 1 = high, 2 = normal, 3 = low. default is 2.",
+                                "format": "int32",
+                                "type": "integer"
+                            },
+                            "required_skills": {
+                                "description": "array of required skills",
+                                "items": {
+                                    "type": "string"
+                                },
+                                "type": "array"
+                            },
+                            "size": {
+                                "description": "array of capacity dimensions",
+                                "items": {
+                                    "format": "int32",
+                                    "type": "integer"
+                                },
+                                "type": "array"
+                            },
+                            "time_windows": {
+                                "description": "array of time windows. currently, only a single time window is allowed",
+                                "items": {
+                                    "properties": {
+                                        "earliest": {
+                                            "description": "earliest start time of corresponding activity",
+                                            "format": "int64",
+                                            "type": "integer"
+                                        },
+                                        "latest": {
+                                            "description": "latest start time of corresponding activity",
+                                            "format": "int64",
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "type": "object"
+                                },
+                                "type": "array"
+                            },
+                            "type": {
+                                "description": "type of service",
+                                "enum": [
+                                    "service",
+                                    "pickup",
+                                    "delivery"
+                                ],
+                                "type": "string"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "type": "array"
+                },
+                "shipments": {
+                    "description": "An array of shipments",
+                    "items": {
+                        "properties": {
+                            "allowed_vehicles": {
+                                "description": "array of allowed vehicle ids",
+                                "items": {
+                                    "type": "string"
+                                },
+                                "type": "array"
+                            },
+                            "delivery": {
+                                "properties": {
+                                    "address": {
+                                        "properties": {
+                                            "lat": {
+                                                "description": "latitude",
+                                                "format": "double",
+                                                "type": "number"
+                                            },
+                                            "location_id": {
+                                                "description": "Unique identifier of location",
+                                                "type": "string"
+                                            },
+                                            "lon": {
+                                                "description": "longitude",
+                                                "format": "double",
+                                                "type": "number"
+                                            }
+                                        },
+                                        "type": "object"
+                                    },
+                                    "duration": {
+                                        "description": "duration of stop, i.e. time in ms the corresponding activity takes",
+                                        "format": "int64",
+                                        "type": "integer"
+                                    },
+                                    "time_windows": {
+                                        "description": "array of time windows. currently, only a single time window is allowed",
+                                        "items": {
+                                            "properties": {
+                                                "earliest": {
+                                                    "description": "earliest start time of corresponding activity",
+                                                    "format": "int64",
+                                                    "type": "integer"
+                                                },
+                                                "latest": {
+                                                    "description": "latest start time of corresponding activity",
+                                                    "format": "int64",
+                                                    "type": "integer"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "type": "array"
+                                    }
+                                },
+                                "type": "object"
+                            },
+                            "id": {
+                                "description": "Unique identifier of service",
+                                "type": "string"
+                            },
+                            "name": {
+                                "description": "name of shipment",
+                                "type": "string"
+                            },
+                            "pickup": {
+                                "properties": {
+                                    "address": {
+                                        "properties": {
+                                            "lat": {
+                                                "description": "latitude",
+                                                "format": "double",
+                                                "type": "number"
+                                            },
+                                            "location_id": {
+                                                "description": "Unique identifier of location",
+                                                "type": "string"
+                                            },
+                                            "lon": {
+                                                "description": "longitude",
+                                                "format": "double",
+                                                "type": "number"
+                                            }
+                                        },
+                                        "type": "object"
+                                    },
+                                    "duration": {
+                                        "description": "duration of stop, i.e. time in ms the corresponding activity takes",
+                                        "format": "int64",
+                                        "type": "integer"
+                                    },
+                                    "time_windows": {
+                                        "description": "array of time windows. currently, only a single time window is allowed",
+                                        "items": {
+                                            "properties": {
+                                                "earliest": {
+                                                    "description": "earliest start time of corresponding activity",
+                                                    "format": "int64",
+                                                    "type": "integer"
+                                                },
+                                                "latest": {
+                                                    "description": "latest start time of corresponding activity",
+                                                    "format": "int64",
+                                                    "type": "integer"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "type": "array"
+                                    }
+                                },
+                                "type": "object"
+                            },
+                            "priority": {
+                                "description": "priority of service, i.e. 1 = high, 2 = normal, 3 = low. default is 2.",
+                                "format": "int32",
+                                "type": "integer"
+                            },
+                            "required_skills": {
+                                "description": "array of required skills",
+                                "items": {
+                                    "type": "string"
+                                },
+                                "type": "array"
+                            },
+                            "size": {
+                                "description": "array of capacity dimensions",
+                                "items": {
+                                    "format": "int32",
+                                    "type": "integer"
+                                },
+                                "type": "array"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "type": "array"
+                },
+                "vehicle_types": {
+                    "description": "An array of vehicle types",
+                    "items": {
+                        "properties": {
+                            "capacity": {
+                                "description": "array of capacity dimensions",
+                                "items": {
+                                    "format": "int32",
+                                    "type": "integer"
+                                },
+                                "type": "array"
+                            },
+                            "profile": {
+                                "description": "Profile of vehicle type",
+                                "enum": [
+                                    "car",
+                                    "bike",
+                                    "foot",
+                                    "mtb",
+                                    "motorcycle",
+                                    "racingbike",
+                                    "truck",
+                                    "small_truck",
+                                    "bus"
+                                ],
+                                "example": "car",
+                                "type": "string"
+                            },
+                            "service_time_factor": {
+                                "description": "service time factor of vehicle type",
+                                "format": "double",
+                                "type": "number"
+                            },
+                            "speed_factor": {
+                                "description": "speed_factor of vehicle type",
+                                "format": "double",
+                                "type": "number"
+                            },
+                            "type_id": {
+                                "description": "Unique identifier for the vehicle type",
+                                "type": "string"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "type": "array"
+                },
+                "vehicles": {
+                    "description": "An array of vehicles that can be employed",
+                    "items": {
+                        "properties": {
+                            "break": {
+                                "properties": {
+                                    "duration": {
+                                        "description": "duration of break",
+                                        "format": "int64",
+                                        "type": "integer"
+                                    },
+                                    "earliest": {
+                                        "description": "earliest start of break",
+                                        "format": "int64",
+                                        "type": "integer"
+                                    },
+                                    "initial_driving_time": {
+                                        "description": "initial driving time, i.e. the time your driver has already spent for driving",
+                                        "format": "int64",
+                                        "type": "integer"
+                                    },
+                                    "latest": {
+                                        "description": "latest start of break",
+                                        "format": "int64",
+                                        "type": "integer"
+                                    },
+                                    "max_driving_time": {
+                                        "description": "max driving time without break",
+                                        "format": "int64",
+                                        "type": "integer"
+                                    },
+                                    "possible_split": {
+                                        "description": "array of splits",
+                                        "items": {
+                                            "format": "int64",
+                                            "type": "integer"
+                                        },
+                                        "type": "array"
+                                    }
+                                },
+                                "type": "object"
+                            },
+                            "earliest_start": {
+                                "description": "earliest start of vehicle at its start location",
+                                "format": "int64",
+                                "type": "integer"
+                            },
+                            "end_address": {
+                                "properties": {
+                                    "lat": {
+                                        "description": "latitude",
+                                        "format": "double",
+                                        "type": "number"
+                                    },
+                                    "location_id": {
+                                        "description": "Unique identifier of location",
+                                        "type": "string"
+                                    },
+                                    "lon": {
+                                        "description": "longitude",
+                                        "format": "double",
+                                        "type": "number"
+                                    }
+                                },
+                                "type": "object"
+                            },
+                            "latest_end": {
+                                "description": "latest end of vehicle at its end location",
+                                "format": "int64",
+                                "type": "integer"
+                            },
+                            "return_to_depot": {
+                                "description": "Indicates whether vehicle should return to start address or not. If not, it can end at any service activity.",
+                                "type": "boolean"
+                            },
+                            "skills": {
+                                "description": "array of skills",
+                                "items": {
+                                    "type": "string"
+                                },
+                                "type": "array"
+                            },
+                            "start_address": {
+                                "properties": {
+                                    "lat": {
+                                        "description": "latitude",
+                                        "format": "double",
+                                        "type": "number"
+                                    },
+                                    "location_id": {
+                                        "description": "Unique identifier of location",
+                                        "type": "string"
+                                    },
+                                    "lon": {
+                                        "description": "longitude",
+                                        "format": "double",
+                                        "type": "number"
+                                    }
+                                },
+                                "type": "object"
+                            },
+                            "type_id": {
+                                "description": "Unique identifier referring to the available vehicle types",
+                                "type": "string"
+                            },
+                            "vehicle_id": {
+                                "description": "Unique identifier of vehicle",
+                                "type": "string"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "type": "array"
+                }
+            },
+            "type": "object"
+        }
+    }
+}

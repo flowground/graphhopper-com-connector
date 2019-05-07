@@ -1,0 +1,72 @@
+{
+    "title": "Route Optimization",
+    "description": "Our Route Optimization API solves the so called vehicle routing problem fast. It calculates an optimal tour for a set of vehicles, services and constraints",
+    "docsUrl": "",
+    "url": "https://api.apis.guru/v2/specs/graphhopper.com/1.0/swagger.json",
+    "envVars": {},
+    "credentials": {
+        "fields": {
+            "server": {
+                "label": "Server",
+                "viewClass": "SelectView",
+                "model": [
+                    "https://graphhopper.com/api/1/vrp",
+                    "--- Custom URL"
+                ],
+                "required": true
+            },
+            "otherServer": {
+                "label": "Custom Server URL",
+                "viewClass": "TextFieldView"
+            },
+            "api_key": {
+                "label": "key (api_key)",
+                "viewClass": "TextFieldView"
+            }
+        }
+    },
+    "triggers": {
+        "startFlow": {
+            "main": "./lib/triggers/startFlow.js",
+            "type": "polling",
+            "title": "Start Flow",
+            "fields": {}
+        }
+    },
+    "actions": {
+        "postVrp": {
+            "main": "./lib/actions/postVrp.js",
+            "title": "Solves vehicle routing problems",
+            "description": "This endpoint for solving vehicle routing problems, i.e. traveling salesman or vehicle routing problems, and returns the solution.\n",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/postVrp.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        },
+        "getSolution": {
+            "main": "./lib/actions/getSolution.js",
+            "title": "Return the solution associated to the jobId",
+            "description": "This endpoint returns the solution of a large problems. You can fetch it with the job_id, you have been sent.\n",
+            "fields": {
+                "verbose": {
+                    "viewClass": "CheckBoxView",
+                    "label": "Debug this step (log more data)"
+                }
+            },
+            "metadata": {
+                "in": "./lib/schemas/getSolution.in.json",
+                "out": {
+                    "type": "object"
+                }
+            }
+        }
+    }
+}
